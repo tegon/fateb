@@ -26,9 +26,9 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+
 		Button button1 = (Button) findViewById(R.id.button1);
-		
+
 		button1.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -36,7 +36,7 @@ public class MainActivity extends Activity {
 				// Execute Title AsyncTask
 				new Title().execute();
 			}
-			
+
 		});
 	}
 
@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
 		getMenuInflater().inflate(R.menu.activity_main, menu);
 		return true;
 	}
-	
+
 	// Title AsyncTask
 		private class Title extends AsyncTask<Void, Void, Void> {
 			String title;
@@ -61,10 +61,10 @@ public class MainActivity extends Activity {
 			protected Void doInBackground(Void... params) {
 				Map<String, String> cookies = new HashMap<String, String>();
 				//login=1302012; senha=pqpfateb; tipousuario=aluno; idusuario=1302012
-				cookies.put("login", "1302012");
-				cookies.put("senha", "pqpfateb");
+				cookies.put("login", "login");
+				cookies.put("senha", "passwd");
 				cookies.put("tipousuario", "aluno");
-				cookies.put("idusuario", "1302012");
+				cookies.put("idusuario", "login");
 				try {
 					// Connect to the web site
 					Document document = Jsoup
