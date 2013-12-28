@@ -60,7 +60,6 @@ public class MainActivity extends Activity {
 			@Override
 			protected Void doInBackground(Void... params) {
 				Map<String, String> cookies = new HashMap<String, String>();
-				//login=1302012; senha=pqpfateb; tipousuario=aluno; idusuario=1302012
 				cookies.put("login", "login");
 				cookies.put("senha", "passwd");
 				cookies.put("tipousuario", "aluno");
