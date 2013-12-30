@@ -3,6 +3,8 @@ package com.tegon.pqpfateb;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -33,25 +35,21 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onClick(View arg0) {
-				// Execute Title AsyncTask
-				new Title().execute();
+				// Execute TableParser AsyncTask
+				new TableParser().execute();
 			}
 
 		});
 	}
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_main, menu);
-		return true;
-	}
+	// TableParser AsyncTask
+		private class TableParser extends AsyncTask<Void, Void, Void> {
+			Element userInfo;
+			Element gradeInfo;
+			String text;
+			List<String> keys = new ArrayList<String>();
+			List<Map<String, String>> grades = new ArrayList<Map<String, String>>();
 
-	// Title AsyncTask
-		private class Title extends AsyncTask<Void, Void, Void> {
-			String title;
-			String url;
-			String table;
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
@@ -64,6 +62,7 @@ public class MainActivity extends Activity {
 				cookies.put("senha", "passwd");
 				cookies.put("tipousuario", "aluno");
 				cookies.put("idusuario", "login");
+
 				try {
 					// Connect to the web site
 					Document document = Jsoup
@@ -71,10 +70,35 @@ public class MainActivity extends Activity {
 							.cookies(cookies)
 							.header("Referer", "http://www2.fateb.br/saladeestudos/aluno/framecentral.php")
 							.post();
-					// Get the html document title
-					title = document.title();
-					url = document.location();
-					table = document.select("table").toString();
+
+					userInfo = document.select("table").first();
+					gradeInfo = document.select("table").last();
+
+					for (Element row : userInfo.select("tr")) {
+		        Elements tds = row.select("td");
+		        text += tds.text() + " ";
+		      }
+
+    			for (Element row : gradeInfo.select("tr")) {
+            for (Element td : row.select("td.titulo")) {
+            	if (td.text() != null) {
+            		keys.add(td.text());
+            	}
+            }
+          }
+
+          for (Element row : gradeInfo.select("tr")) {
+          	Map<String, String> grade = new HashMap<String, String>();
+          	int i = 0;
+          	for (Element td : row.select("td")) {
+          		if (!keys.contains(td.text()) && td.text() != null) {
+          			grade.put(keys.get(i), td.text());
+          			i++;
+          		}
+          	}
+          	grades.add(grade);
+          }
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -84,7 +108,7 @@ public class MainActivity extends Activity {
 			@Override
 			protected void onPostExecute(Void result) {
 				TextView textView1 = (TextView) findViewById(R.id.textView1);
-				textView1.setText(table);
+				textView1.setText(grades.toString());
 			}
 		}
 
