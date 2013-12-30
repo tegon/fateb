@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,7 +31,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 
 		Button button1 = (Button) findViewById(R.id.button1);
-
 		button1.setOnClickListener(new OnClickListener(){
 
 			@Override
@@ -44,6 +44,8 @@ public class MainActivity extends Activity {
 
 	// TableParser AsyncTask
 		private class TableParser extends AsyncTask<Void, Void, Void> {
+			EditText login = (EditText) findViewById(R.id.login);
+			EditText password = (EditText) findViewById(R.id.password);
 			Element userInfo;
 			Element gradeInfo;
 			String text;
@@ -58,10 +60,10 @@ public class MainActivity extends Activity {
 			@Override
 			protected Void doInBackground(Void... params) {
 				Map<String, String> cookies = new HashMap<String, String>();
-				cookies.put("login", "login");
-				cookies.put("senha", "passwd");
+				cookies.put("login", login.getText().toString());
+				cookies.put("senha", password.getText().toString());
 				cookies.put("tipousuario", "aluno");
-				cookies.put("idusuario", "login");
+				cookies.put("idusuario", login.getText().toString());
 
 				try {
 					// Connect to the web site
