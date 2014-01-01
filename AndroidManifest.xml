@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.persmission.ACCESS_NETWORK_STATE" />
-    
+    <uses-permission android:name="android.persmission.ACCESS_NETWORK_STATE" />
+
     <uses-sdk
         android:minSdkVersion="9"
         android:targetSdkVersion="16" />
@@ -24,6 +24,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tegon.pqpfateb.ListActivity"
+            android:label="@string/title_activity_list" >
         </activity>
     </application>
 

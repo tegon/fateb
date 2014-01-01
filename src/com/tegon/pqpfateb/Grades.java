@@ -12,20 +12,20 @@ import org.jsoup.select.Elements;
 import android.util.SparseArray;
 
 public class Grades {
-  public static SparseArray get() {
-    Element gradeInfo = getTable();
+  public static SparseArray get(String login, String password) {
+    Element gradeInfo = getTable(login, password);
     SparseArray<Group> groups = parseTable(gradeInfo);
     return groups;
   }
 
-  public static Element getTable() {
+  public static Element getTable(String login, String password) {
     Element gradeInfo = null;
 
     Map<String, String> cookies = new HashMap<String, String>();
-    cookies.put("login", "1302012");
-    cookies.put("senha", "pqpfateb");
+    cookies.put("login", login);
+    cookies.put("senha", password);
     cookies.put("tipousuario", "aluno");
-    cookies.put("idusuario", "1302012");
+    cookies.put("idusuario", login);
 
 
     try {

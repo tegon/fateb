@@ -2,53 +2,70 @@ package com.tegon.pqpfateb;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.SparseArray;
-import android.os.AsyncTask;
-import android.view.Menu;
-import android.widget.ExpandableListView;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public class MainActivity extends Activity {
-  ProgressDialog mProgressDialog;
+  public static final String PREFS_NAME = "FatebUser";
+  public static SharedPreferences SETTINGS;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    mProgressDialog = new ProgressDialog(this);
-    mProgressDialog.setMessage("Carregando...");
-    mProgressDialog.show();
+    SETTINGS = getSharedPreferences(PREFS_NAME, 0);
 
-    SparseArray<Group> groups = null;
-
-    try {
-      groups = new GetData().execute().get();
-    } catch (Exception e) {
-      e.printStackTrace();
+    if (getLogin() != "" && getPassword() != "") {
+      Intent intent = new Intent(MainActivity.this, ListActivity.class);
+      startActivity(intent);
     }
 
-    ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
-    MyExpandableListAdapter adapter = new MyExpandableListAdapter(this, groups);
-    listView.setAdapter(adapter);
+    Button button1 = (Button) findViewById(R.id.button1);
+    final EditText login = (EditText) findViewById(R.id.login);
+    final EditText password = (EditText) findViewById(R.id.password);
+
+    // final ProgressDialog mProgressDialog = new ProgressDialog(this);
+    button1.setOnClickListener(new OnClickListener() {
+
+  		@Override
+  		public void onClick(View v) {
+  			// mProgressDialog.setMessage("Carregando...");
+  			// mProgressDialog.show();
+        setLogin(login.getText().toString());
+        setPassword(password.getText().toString());
+
+  			Intent intent = new Intent(MainActivity.this, ListActivity.class);
+  			startActivity(intent);
+  		}
+	  });
   }
 
-  private class GetData extends AsyncTask<SparseArray<Group>, Void, SparseArray<Group>> {
-
-  	@Override
-  	protected void onPreExecute() {
-  		super.onPreExecute();
-  	}
-
-  	@Override
-  	protected SparseArray<Group> doInBackground(SparseArray<Group>... params) {
-  	  return Grades.get();
-  	}
-
-  	@Override
-  	protected void onPostExecute(SparseArray<Group> groups) {
-      mProgressDialog.dismiss();
-  	}
+  public void editSettings(String key, String value) {
+    SharedPreferences.Editor editor = SETTINGS.edit();
+    editor.putString(key, value);
+    editor.commit();
   }
 
+  public String getLogin() {
+    return SETTINGS.getString("login", "");
+  }
+
+  public String getPassword() {
+    return SETTINGS.getString("password", "");
+  }
+
+  public void setLogin(String login) {
+    editSettings("login", login);
+  }
+
+  public void setPassword(String password) {
+    editSettings("password", password);
+  }
 }
