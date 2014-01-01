@@ -3,6 +3,8 @@ package com.tegon.pqpfateb;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -46,11 +48,37 @@ public class Grades {
   public static SparseArray parseTable(Element gradeInfo) {
     SparseArray<Group> groups = new SparseArray<Group>();
 
-    int i = 0;
-    for (Element row : gradeInfo.select("tr")) {
-      Group group = new Group(row.select("td").first().text());
+    Elements rows = gradeInfo.select("tr");
+    ArrayList<String> keys = new ArrayList<String>();
+    ArrayList<ArrayList<String>> grades = new ArrayList<ArrayList<String>>();
+
+    // save keys: DISCIPLINAS, Faltas
+    for (Element row : rows) {
+      for (Element td : row.select("td.titulo")) {
+        keys.add(td.text());
+      }
+    }
+    // add all rows and their columns to grades list
+    for (Element row : rows) {
+      ArrayList<String> grade = new ArrayList<String>();
       for (Element td : row.select("td")) {
-        group.children.add(td.text());
+        grade.add(td.text());
+      }
+      grades.add(grade);
+    }
+    // remove all keys from grades array
+    grades.remove(0);
+    keys.remove(0);
+
+    //remove all first position
+    int i = 0;
+    for (ArrayList<String> grade : grades) {
+      Group group = new Group(grade.get(0));
+      grade.remove(0);
+      int j = 0;
+      for (String value : grade) {
+        group.children.add(keys.get(j) + ": " + value);
+        j++;
       }
       groups.append(i, group);
       i++;
