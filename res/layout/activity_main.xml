@@ -22,7 +22,8 @@
         android:layout_below="@+id/login"
         android:layout_marginTop="71dp"
         android:ems="10"
-        android:inputType="textPassword" />
+        android:inputType="textPassword"
+        android:imeOptions="actionSend" />
 
     <TextView
         android:id="@+id/textView1"

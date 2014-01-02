@@ -10,9 +10,13 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.widget.TextView.OnEditorActionListener;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
 
 public class MainActivity extends Activity {
   public static final String PREFS_NAME = "FatebUser";
@@ -33,6 +37,20 @@ public class MainActivity extends Activity {
     Button button1 = (Button) findViewById(R.id.button1);
     final EditText login = (EditText) findViewById(R.id.login);
     final EditText password = (EditText) findViewById(R.id.password);
+
+    password.setOnEditorActionListener(new OnEditorActionListener() {
+      @Override
+      public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        boolean handled = false;
+        if (actionId == EditorInfo.IME_ACTION_SEND) {
+          handled = true;
+          setLogin(login.getText().toString());
+          setPassword(password.getText().toString());
+          new OpenListActivity().execute();
+        }
+        return handled;
+      }
+    });
 
     button1.setOnClickListener(new OnClickListener() {
 
