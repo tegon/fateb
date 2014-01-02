@@ -40,8 +40,6 @@ public class MainActivity extends Activity {
     final EditText login = (EditText) findViewById(R.id.login);
     final EditText password = (EditText) findViewById(R.id.password);
 
-    login.requestFocus();
-
     password.setOnEditorActionListener(new OnEditorActionListener() {
       @Override
       public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {

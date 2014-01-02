@@ -50,7 +50,9 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="37dp"
         android:ems="10"
-        android:inputType="number" />
+        android:inputType="number" >
+        <requestFocus />
+    </EditText>
 
     <TextView
         android:id="@+id/textView2"
