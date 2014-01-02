@@ -11,13 +11,13 @@ import android.widget.CheckedTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MyExpandableListAdapter extends BaseExpandableListAdapter {
+public class GroupExpandableListAdapter extends BaseExpandableListAdapter {
 
   private final SparseArray<Group> groups;
   public LayoutInflater inflater;
   public Activity activity;
 
-  public MyExpandableListAdapter(Activity act, SparseArray<Group> groups) {
+  public GroupExpandableListAdapter(Activity act, SparseArray<Group> groups) {
     activity = act;
     this.groups = groups;
     inflater = act.getLayoutInflater();

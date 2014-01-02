@@ -45,7 +45,7 @@ public class ListActivity extends Activity {
     }
 
     ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
-    MyExpandableListAdapter adapter = new MyExpandableListAdapter(this, groups);
+    GroupExpandableListAdapter adapter = new GroupExpandableListAdapter(this, groups);
     listView.setAdapter(adapter);
   }
 
