@@ -34,6 +34,14 @@
         android:layout_marginTop="44dp"
         android:text="Senha" />
 
+    <CheckBox
+        android:id="@+id/showPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/password"
+        android:layout_below="@+id/password"
+        android:text="Mostrar Senha" />
+
     <EditText
         android:id="@+id/login"
         android:layout_width="wrap_content"

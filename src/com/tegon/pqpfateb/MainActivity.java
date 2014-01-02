@@ -11,12 +11,17 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.TextView.OnEditorActionListener;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.text.method.PasswordTransformationMethod;
+import android.text.method.HideReturnsTransformationMethod;
 
 public class MainActivity extends Activity {
   public static final String PREFS_NAME = "FatebUser";
@@ -35,8 +40,11 @@ public class MainActivity extends Activity {
     }
 
     Button button1 = (Button) findViewById(R.id.button1);
+    CheckBox showPassword = (CheckBox) findViewById(R.id.showPassword);
     final EditText login = (EditText) findViewById(R.id.login);
     final EditText password = (EditText) findViewById(R.id.password);
+
+    login.requestFocus();
 
     password.setOnEditorActionListener(new OnEditorActionListener() {
       @Override
@@ -62,6 +70,17 @@ public class MainActivity extends Activity {
         new OpenListActivity().execute();
   		}
 	  });
+
+    showPassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (!isChecked) {
+          password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        } else {
+          password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        }
+      }
+    });
   }
 
   public void editSettings(String key, String value) {
