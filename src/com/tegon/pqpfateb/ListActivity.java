@@ -1,5 +1,7 @@
 package com.tegon.pqpfateb;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.SparseArray;
@@ -16,15 +18,16 @@ public class ListActivity extends Activity {
   User currentUser;
   ProgressDialog progressDialog;
   SparseArray<Group> groups = null;
+  ArrayList<Object> response = null;
 
   @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-  private void actionBarSetup() {
+  private void actionBarSetup(ArrayList<String> user) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
       ActionBar ab = getActionBar();
-      ab.setTitle("Leonardo Tegon");
-      ab.setSubtitle("Sistemas de Informação");
+      ab.setTitle(user.get(1).replace("Nome: ", ""));
+      ab.setSubtitle(user.get(3).replace("Curso: ", ""));
     } else {
-      setTitle("Leonardo Tegon");
+      setTitle(user.get(1).replace("Nome: ", ""));
     }
   }
 
@@ -33,14 +36,14 @@ public class ListActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_list);
 
-    actionBarSetup();
-
     currentUser = new User(this);
 
     try {
       GetData request = new GetData(new Callback() {
         public void run(Object result) {
-          groups = (SparseArray<Group>) result;
+          response = (ArrayList<Object>) result;
+          actionBarSetup((ArrayList<String>) response.get(0));
+          groups = (SparseArray<Group>) response.get(1);
           initializeListView();
         }
       });
@@ -65,7 +68,7 @@ public class ListActivity extends Activity {
     progressDialog.dismiss();
   }
 
-  private class GetData extends AsyncTask<SparseArray<Group>, Void, SparseArray<Group>> {
+  private class GetData extends AsyncTask<ArrayList<Object>, Void, ArrayList<Object>> {
     Callback callback;
 
     public GetData(Callback callback) {
@@ -79,12 +82,12 @@ public class ListActivity extends Activity {
   	}
 
   	@Override
-  	protected SparseArray<Group> doInBackground(SparseArray<Group>... params) {
+  	protected ArrayList<Object> doInBackground(ArrayList<Object>... params) {
   	  return Grades.get(currentUser.getLogin(), currentUser.getPassword());
   	}
 
   	@Override
-  	protected void onPostExecute(SparseArray<Group> groups) {
+  	protected void onPostExecute(ArrayList<Object> groups) {
       callback.run(groups);
       removeDialog();
   	}

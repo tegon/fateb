@@ -14,14 +14,29 @@ import org.jsoup.select.Elements;
 import android.util.SparseArray;
 
 public class Grades {
-  public static SparseArray get(String login, String password) {
-    Element gradeInfo = getTable(login, password);
-    SparseArray<Group> groups = parseTable(gradeInfo);
-    return groups;
+  public static ArrayList<Object> get(String login, String password) {
+    Elements tables = getData(login, password);
+    SparseArray<Group> groups = parseGradesTable(tables.last());
+    ArrayList<String> userInfo = parseUserTable(tables.first());
+    ArrayList<Object> response = new ArrayList<Object>();
+    response.add(userInfo);
+    response.add(groups);
+    return response;
   }
 
-  public static Element getTable(String login, String password) {
-    Element gradeInfo = null;
+  public static ArrayList<String> parseUserTable(Element userInfo) {
+    ArrayList<String> user = new ArrayList<String>();
+
+    for (Element row : userInfo.select("tr")) {
+      for (Element td : row.select("td")) {
+        user.add(td.text());
+      }
+    }
+    return user;
+  }
+
+  public static Elements getData(String login, String password) {
+    Elements tables = null;
 
     Map<String, String> cookies = new HashMap<String, String>();
     cookies.put("login", login);
@@ -38,14 +53,14 @@ public class Grades {
         .header("Referer", "http://www2.fateb.br/saladeestudos/aluno/framecentral.php")
         .post();
 
-      gradeInfo = document.select("table").last();
+      tables = document.select("table");
     } catch (IOException e) {
       e.printStackTrace();
     }
-    return gradeInfo;
+    return tables;
   }
 
-  public static SparseArray parseTable(Element gradeInfo) {
+  public static SparseArray parseGradesTable(Element gradeInfo) {
     SparseArray<Group> groups = new SparseArray<Group>();
 
     Elements rows = gradeInfo.select("tr");
