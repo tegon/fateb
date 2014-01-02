@@ -7,14 +7,12 @@ import android.os.AsyncTask;
 import android.view.Menu;
 import android.widget.ExpandableListView;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.app.ActionBar;
 import android.annotation.TargetApi;
 
 public class ListActivity extends Activity {
-  public static final String PREFS_NAME = "FatebUser";
-  public static SharedPreferences SETTINGS;
+  User currentUser;
 
   @TargetApi(Build.VERSION_CODES.HONEYCOMB)
   private void actionBarSetup() {
@@ -34,7 +32,7 @@ public class ListActivity extends Activity {
 
     actionBarSetup();
 
-    SETTINGS = getSharedPreferences(PREFS_NAME, 0);
+    currentUser = new User(this);
 
     SparseArray<Group> groups = null;
 
@@ -58,7 +56,7 @@ public class ListActivity extends Activity {
 
   	@Override
   	protected SparseArray<Group> doInBackground(SparseArray<Group>... params) {
-  	  return Grades.get(SETTINGS.getString("login", ""), SETTINGS.getString("password", ""));
+  	  return Grades.get(currentUser.getLogin(), currentUser.getPassword());
   	}
 
   	@Override

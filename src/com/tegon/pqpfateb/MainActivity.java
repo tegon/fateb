@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.TextView.OnEditorActionListener;
 import android.view.KeyEvent;
@@ -24,8 +23,7 @@ import android.text.method.PasswordTransformationMethod;
 import android.text.method.HideReturnsTransformationMethod;
 
 public class MainActivity extends Activity {
-  public static final String PREFS_NAME = "FatebUser";
-  public static SharedPreferences SETTINGS;
+  User currentUser;
   ProgressDialog progressDialog = null;
 
   @Override
@@ -33,9 +31,9 @@ public class MainActivity extends Activity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    SETTINGS = getSharedPreferences(PREFS_NAME, 0);
+    currentUser = new User(this);
 
-    if (getLogin() != "" && getPassword() != "") {
+    if (currentUser.isRegistered()) {
       new OpenListActivity().execute();
     }
 
@@ -52,8 +50,7 @@ public class MainActivity extends Activity {
         boolean handled = false;
         if (actionId == EditorInfo.IME_ACTION_SEND) {
           handled = true;
-          setLogin(login.getText().toString());
-          setPassword(password.getText().toString());
+          currentUser.register(login.getText().toString(), password.getText().toString());
           new OpenListActivity().execute();
         }
         return handled;
@@ -64,9 +61,7 @@ public class MainActivity extends Activity {
 
   		@Override
   		public void onClick(View v) {
-        setLogin(login.getText().toString());
-        setPassword(password.getText().toString());
-
+        currentUser.register(login.getText().toString(), password.getText().toString());
         new OpenListActivity().execute();
   		}
 	  });
@@ -83,30 +78,8 @@ public class MainActivity extends Activity {
     });
   }
 
-  public void editSettings(String key, String value) {
-    SharedPreferences.Editor editor = SETTINGS.edit();
-    editor.putString(key, value);
-    editor.commit();
-  }
-
-  public String getLogin() {
-    return SETTINGS.getString("login", "");
-  }
-
-  public String getPassword() {
-    return SETTINGS.getString("password", "");
-  }
-
-  public void setLogin(String login) {
-    editSettings("login", login);
-  }
-
-  public void setPassword(String password) {
-    editSettings("password", password);
-  }
-
   public void showDialog() {
-    progressDialog = ProgressDialog.show(this, "Fateb", "Carregando...", true, false);
+    progressDialog = ProgressDialog.show(this, "", "Carregando...", true, false);
   }
 
   public void removeDialog() {
