@@ -3,7 +3,6 @@ package com.tegon.pqpfateb;
 import java.lang.Exception;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,7 +23,6 @@ import android.text.method.HideReturnsTransformationMethod;
 
 public class MainActivity extends Activity {
   User currentUser;
-  ProgressDialog progressDialog = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +32,7 @@ public class MainActivity extends Activity {
     currentUser = new User(this);
 
     if (currentUser.isRegistered()) {
-      new OpenListActivity().execute();
+      openListActivity();
     }
 
     Button button1 = (Button) findViewById(R.id.button1);
@@ -51,7 +49,7 @@ public class MainActivity extends Activity {
         if (actionId == EditorInfo.IME_ACTION_SEND) {
           handled = true;
           currentUser.register(login.getText().toString(), password.getText().toString());
-          new OpenListActivity().execute();
+          openListActivity();
         }
         return handled;
       }
@@ -62,7 +60,7 @@ public class MainActivity extends Activity {
   		@Override
   		public void onClick(View v) {
         currentUser.register(login.getText().toString(), password.getText().toString());
-        new OpenListActivity().execute();
+        openListActivity();
   		}
 	  });
 
@@ -78,35 +76,9 @@ public class MainActivity extends Activity {
     });
   }
 
-  public void showDialog() {
-    progressDialog = ProgressDialog.show(this, "", "Carregando...", true, false);
-  }
-
-  public void removeDialog() {
-    progressDialog.dismiss();
-  }
-
-  private class OpenListActivity extends AsyncTask<String, Integer, Boolean> {
-    @Override
-    protected Boolean doInBackground(String... params) {
-      try {
-        Intent intent = new Intent(MainActivity.this, ListActivity.class);
-        startActivity(intent);
-      } catch (Exception e) {
-        e.printStackTrace();
-      }
-      return Boolean.TRUE;
-    }
-
-    @Override
-    protected void onPreExecute() {
-      showDialog();
-    }
-
-    @Override
-    protected void onPostExecute(Boolean result) {
-      removeDialog();
-      finish();
-    }
+  public void openListActivity() {
+    Intent intent = new Intent(this, ListActivity.class);
+    startActivity(intent);
+    finish();
   }
 }

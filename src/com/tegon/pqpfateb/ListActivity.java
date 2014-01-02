@@ -10,9 +10,12 @@ import android.content.Context;
 import android.os.Build;
 import android.app.ActionBar;
 import android.annotation.TargetApi;
+import android.app.ProgressDialog;
 
 public class ListActivity extends Activity {
   User currentUser;
+  ProgressDialog progressDialog;
+  SparseArray<Group> groups = null;
 
   @TargetApi(Build.VERSION_CODES.HONEYCOMB)
   private void actionBarSetup() {
@@ -34,24 +37,45 @@ public class ListActivity extends Activity {
 
     currentUser = new User(this);
 
-    SparseArray<Group> groups = null;
-
     try {
-      groups = new GetData().execute().get();
+      GetData request = new GetData(new Callback() {
+        public void run(Object result) {
+          groups = (SparseArray<Group>) result;
+          initializeListView();
+        }
+      });
+      request.execute();
+
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
 
+  public void initializeListView() {
     ExpandableListView listView = (ExpandableListView) findViewById(R.id.listView);
     GroupExpandableListAdapter adapter = new GroupExpandableListAdapter(this, groups);
     listView.setAdapter(adapter);
   }
 
+  public void showDialog() {
+    progressDialog = ProgressDialog.show(this, "", "Carregando...", true, false);
+  }
+
+  public void removeDialog() {
+    progressDialog.dismiss();
+  }
+
   private class GetData extends AsyncTask<SparseArray<Group>, Void, SparseArray<Group>> {
+    Callback callback;
+
+    public GetData(Callback callback) {
+      this.callback = callback;
+    }
 
   	@Override
   	protected void onPreExecute() {
   		super.onPreExecute();
+      showDialog();
   	}
 
   	@Override
@@ -61,6 +85,8 @@ public class ListActivity extends Activity {
 
   	@Override
   	protected void onPostExecute(SparseArray<Group> groups) {
+      callback.run(groups);
+      removeDialog();
   	}
   }
 
