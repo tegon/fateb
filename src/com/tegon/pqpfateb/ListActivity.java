@@ -1,7 +1,6 @@
 package com.tegon.pqpfateb;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.os.AsyncTask;
@@ -11,7 +10,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class ListActivity extends Activity {
-  ProgressDialog mProgressDialog;
   public static final String PREFS_NAME = "FatebUser";
   public static SharedPreferences SETTINGS;
 
@@ -21,10 +19,6 @@ public class ListActivity extends Activity {
     setContentView(R.layout.activity_list);
 
     SETTINGS = getSharedPreferences(PREFS_NAME, 0);
-
-    mProgressDialog = new ProgressDialog(this);
-    mProgressDialog.setMessage("Carregando...");
-    mProgressDialog.show();
 
     SparseArray<Group> groups = null;
 
@@ -53,7 +47,6 @@ public class ListActivity extends Activity {
 
   	@Override
   	protected void onPostExecute(SparseArray<Group> groups) {
-      mProgressDialog.dismiss();
   	}
   }
 

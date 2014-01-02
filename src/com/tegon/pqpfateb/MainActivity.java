@@ -1,5 +1,7 @@
 package com.tegon.pqpfateb;
 
+import java.lang.Exception;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -10,10 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 
 public class MainActivity extends Activity {
   public static final String PREFS_NAME = "FatebUser";
   public static SharedPreferences SETTINGS;
+  ProgressDialog progressDialog = null;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -23,26 +27,21 @@ public class MainActivity extends Activity {
     SETTINGS = getSharedPreferences(PREFS_NAME, 0);
 
     if (getLogin() != "" && getPassword() != "") {
-      Intent intent = new Intent(MainActivity.this, ListActivity.class);
-      startActivity(intent);
+      new OpenListActivity().execute();
     }
 
     Button button1 = (Button) findViewById(R.id.button1);
     final EditText login = (EditText) findViewById(R.id.login);
     final EditText password = (EditText) findViewById(R.id.password);
 
-    // final ProgressDialog mProgressDialog = new ProgressDialog(this);
     button1.setOnClickListener(new OnClickListener() {
 
   		@Override
   		public void onClick(View v) {
-  			// mProgressDialog.setMessage("Carregando...");
-  			// mProgressDialog.show();
         setLogin(login.getText().toString());
         setPassword(password.getText().toString());
 
-  			Intent intent = new Intent(MainActivity.this, ListActivity.class);
-  			startActivity(intent);
+        new OpenListActivity().execute();
   		}
 	  });
   }
@@ -67,5 +66,37 @@ public class MainActivity extends Activity {
 
   public void setPassword(String password) {
     editSettings("password", password);
+  }
+
+  public void showDialog() {
+    progressDialog = ProgressDialog.show(this, "Fateb", "Carregando...", true, false);
+  }
+
+  public void removeDialog() {
+    progressDialog.dismiss();
+  }
+
+  private class OpenListActivity extends AsyncTask<String, Integer, Boolean> {
+    @Override
+    protected Boolean doInBackground(String... params) {
+      try {
+        Intent intent = new Intent(MainActivity.this, ListActivity.class);
+        startActivity(intent);
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+      return Boolean.TRUE;
+    }
+
+    @Override
+    protected void onPreExecute() {
+      showDialog();
+    }
+
+    @Override
+    protected void onPostExecute(Boolean result) {
+      removeDialog();
+      finish();
+    }
   }
 }
