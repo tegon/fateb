@@ -13,6 +13,12 @@ import android.os.Build;
 import android.app.ActionBar;
 import android.annotation.TargetApi;
 import android.app.ProgressDialog;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.content.Intent;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.widget.Toast;
 
 public class ListActivity extends Activity {
   User currentUser;
@@ -28,6 +34,51 @@ public class ListActivity extends Activity {
       ab.setSubtitle(user.get(3).replace("Curso: ", ""));
     } else {
       setTitle(user.get(1).replace("Nome: ", ""));
+    }
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    MenuInflater inflater = getMenuInflater();
+    inflater.inflate(R.menu.activity_list, menu);
+    return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.resetLogin:
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setMessage("Tem certeza que deseja apagar o login e senha salvos?");
+        alertDialog.setCancelable(true);
+
+        alertDialog.setButton("Sim", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int which) {
+            currentUser.resetLogin();
+            Toast.makeText(ListActivity.this, "Login e senha apagados!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(ListActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+          }
+        });
+
+        alertDialog.setButton2("Cancelar", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int which) {
+          }
+        });
+        alertDialog.show();
+        return true;
+      case R.id.about:
+        AlertDialog about = new AlertDialog.Builder(this).create();
+        about.setMessage("App desenvolvido por Leonardo Tegon, para facilitar o acesso as notas e faltas da Fateb Birigui pelo celular. Dúvidas, críticas e sugestões: ltegon93@gmail.com. Estuda SI, quer ajudar? github.com/tegon/pqp-fateb");
+        about.setButton("OK", new DialogInterface.OnClickListener() {
+          public void onClick(DialogInterface dialog, int which) {
+          }
+        });
+        about.show();
+        return true;
+      default:
+        return super.onOptionsItemSelected(item);
     }
   }
 
