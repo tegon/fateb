@@ -70,7 +70,7 @@ public class ListActivity extends Activity {
         return true;
       case R.id.about:
         AlertDialog about = new AlertDialog.Builder(this).create();
-        about.setMessage("App desenvolvido por Leonardo Tegon, para facilitar o acesso as notas e faltas da Fateb Birigui pelo celular. Dúvidas, críticas e sugestões: ltegon93@gmail.com. Estuda SI, quer ajudar? github.com/tegon/pqp-fateb");
+        about.setMessage("App desenvolvido por Leonardo Tegon, para facilitar o acesso às notas e faltas da Fateb Birigui pelo celular.\nDúvidas, críticas e sugestões: ltegon93@gmail.com.");
         about.setButton("OK", new DialogInterface.OnClickListener() {
           public void onClick(DialogInterface dialog, int which) {
           }
