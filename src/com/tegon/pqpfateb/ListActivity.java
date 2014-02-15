@@ -92,10 +92,14 @@ public class ListActivity extends Activity {
     try {
       GetData request = new GetData(new Callback() {
         public void run(Object result) {
-          response = (ArrayList<Object>) result;
-          actionBarSetup((ArrayList<String>) response.get(0));
-          groups = (SparseArray<Group>) response.get(1);
-          initializeListView();
+          if (response != null) {
+            response = (ArrayList<Object>) result;
+            actionBarSetup((ArrayList<String>) response.get(0));
+            groups = (SparseArray<Group>) response.get(1);
+            initializeListView();
+          } else {
+            showNetworkError();
+          }
         }
       });
       request.execute();
@@ -117,6 +121,10 @@ public class ListActivity extends Activity {
 
   public void removeDialog() {
     progressDialog.dismiss();
+  }
+
+  public void showNetworkError() {
+    Toast.makeText(this, "Ocorreu um erro ao conectar com a internet, por favor verifique sua conexão.", Toast.LENGTH_SHORT).show();
   }
 
   private class GetData extends AsyncTask<ArrayList<Object>, Void, ArrayList<Object>> {

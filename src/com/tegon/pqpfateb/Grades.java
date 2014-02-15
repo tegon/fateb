@@ -15,7 +15,12 @@ import android.util.SparseArray;
 
 public class Grades {
   public static ArrayList<Object> get(String login, String password) {
+
     Elements tables = getData(login, password);
+    if (tables == null) {
+      return null;
+    }
+
     SparseArray<Group> groups = parseGradesTable(tables.last());
     ArrayList<String> userInfo = parseUserTable(tables.first());
     ArrayList<Object> response = new ArrayList<Object>();
@@ -50,6 +55,7 @@ public class Grades {
       Document document = Jsoup
         .connect("http://www2.fateb.br/saladeestudos/aluno/notas.php")
         .cookies(cookies)
+        .timeout(10000)
         .header("Referer", "http://www2.fateb.br/saladeestudos/aluno/framecentral.php")
         .post();
 
