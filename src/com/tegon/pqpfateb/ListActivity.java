@@ -92,7 +92,7 @@ public class ListActivity extends Activity {
     try {
       GetData request = new GetData(new Callback() {
         public void run(Object result) {
-          if (response != null) {
+          if (result != null) {
             response = (ArrayList<Object>) result;
             actionBarSetup((ArrayList<String>) response.get(0));
             groups = (SparseArray<Group>) response.get(1);

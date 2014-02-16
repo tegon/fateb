@@ -55,7 +55,7 @@ public class Grades {
       Document document = Jsoup
         .connect("http://www2.fateb.br/saladeestudos/aluno/notas.php")
         .cookies(cookies)
-        .timeout(10000)
+        .timeout(90000)
         .header("Referer", "http://www2.fateb.br/saladeestudos/aluno/framecentral.php")
         .post();
 
