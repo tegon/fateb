@@ -1,7 +1,10 @@
 package com.tegon.pqpfateb;
 
 import java.lang.Exception;
-
+import com.google.inject.Inject;
+import roboguice.activity.RoboActivity;
+import roboguice.inject.InjectResource;
+import roboguice.inject.InjectView;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,34 +14,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.TextView.OnEditorActionListener;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.text.method.PasswordTransformationMethod;
-import android.text.method.HideReturnsTransformationMethod;
 
-public class MainActivity extends Activity {
+public class MainActivity extends RoboActivity {
   User currentUser;
+  @InjectView(R.id.button1) Button button1;
+  @InjectView(R.id.showPassword) CheckBox showPassword;
+  @InjectView(R.id.login) EditText login;
+  @InjectView(R.id.password) EditText password;
+  @Inject ShowPasswordListener showPasswordListener;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
 
-    currentUser = new User(this);
+    currentUser = new User();
 
     if (currentUser.isRegistered()) {
       openListActivity();
     }
-
-    Button button1 = (Button) findViewById(R.id.button1);
-    CheckBox showPassword = (CheckBox) findViewById(R.id.showPassword);
-    final EditText login = (EditText) findViewById(R.id.login);
-    final EditText password = (EditText) findViewById(R.id.password);
 
     password.setOnEditorActionListener(new OnEditorActionListener() {
       @Override
@@ -62,16 +61,7 @@ public class MainActivity extends Activity {
   		}
 	  });
 
-    showPassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (!isChecked) {
-          password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        } else {
-          password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-        }
-      }
-    });
+    showPassword.setOnCheckedChangeListener(showPasswordListener);
   }
 
   public void openListActivity() {

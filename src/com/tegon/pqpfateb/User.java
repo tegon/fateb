@@ -1,16 +1,13 @@
 package com.tegon.pqpfateb;
 
 import android.content.SharedPreferences;
-import android.app.Activity;
+import com.google.inject.Inject;
 
 public class User {
-  SharedPreferences settings;
-  Activity activity;
-  static final String PREFS_NAME = "FatebUser";
+  @Inject SharedPreferences settings;
 
-  public User(Activity activity) {
-    this.activity = activity;
-    this.settings = activity.getSharedPreferences(PREFS_NAME, 0);
+  public User() {
+    this.settings = settings;
   }
 
   public void editSettings(String key, String value) {
