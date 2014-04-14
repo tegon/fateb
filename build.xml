@@ -28,6 +28,28 @@
          -->
     <property file="ant.properties" />
 
+    <target name="run">
+        <exec executable="ant">
+            <arg value="debug" />
+        </exec>
+
+        <exec executable="adb">
+            <arg value="install" />
+            <arg value="-r" />
+            <arg value="bin/${app.name}-debug.apk" />
+        </exec>
+
+        <exec executable="adb">
+            <arg value="shell"/>
+            <arg value="am"/>
+            <arg value="start"/>
+            <arg value="-a"/>
+            <arg value="android.intent.action.MAIN"/>
+            <arg value="-n"/>
+            <arg value="${package.name}/.${main.activity}"/>
+        </exec>
+    </target>
+
     <!-- if sdk.dir was not set from one of the property file, then
          get it from the ANDROID_HOME env var.
          This must be done before we load project.properties since
