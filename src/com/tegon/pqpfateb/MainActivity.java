@@ -35,7 +35,7 @@ public class MainActivity extends Activity {
       openListActivity();
     }
 
-    Button button1 = (Button) findViewById(R.id.button1);
+    Button send = (Button) findViewById(R.id.send);
     CheckBox showPassword = (CheckBox) findViewById(R.id.showPassword);
     final EditText login = (EditText) findViewById(R.id.login);
     final EditText password = (EditText) findViewById(R.id.password);
@@ -53,7 +53,7 @@ public class MainActivity extends Activity {
       }
     });
 
-    button1.setOnClickListener(new OnClickListener() {
+    send.setOnClickListener(new OnClickListener() {
 
   		@Override
   		public void onClick(View v) {
