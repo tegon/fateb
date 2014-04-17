@@ -2,7 +2,7 @@ package com.tegon.pqpfateb;
 
 import java.lang.Exception;
 
-import android.app.Activity;
+import roboguice.activity.RoboActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -20,9 +20,15 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.HideReturnsTransformationMethod;
+import roboguice.inject.InjectView;
+import com.google.inject.Inject;
 
-public class MainActivity extends Activity {
+public class MainActivity extends RoboActivity {
   User currentUser;
+  @InjectView(R.id.send) Button send;
+  @InjectView(R.id.showPassword) CheckBox showPassword;
+  @InjectView(R.id.login) EditText login;
+  @InjectView(R.id.password) EditText password;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -34,11 +40,6 @@ public class MainActivity extends Activity {
     if (currentUser.isRegistered()) {
       openListActivity();
     }
-
-    Button send = (Button) findViewById(R.id.send);
-    CheckBox showPassword = (CheckBox) findViewById(R.id.showPassword);
-    final EditText login = (EditText) findViewById(R.id.login);
-    final EditText password = (EditText) findViewById(R.id.password);
 
     password.setOnEditorActionListener(new OnEditorActionListener() {
       @Override
