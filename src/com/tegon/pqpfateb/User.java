@@ -1,9 +1,10 @@
 package com.tegon.pqpfateb;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+
 import org.androidannotations.annotations.EBean;
 import org.androidannotations.annotations.RootContext;
-import android.content.Context;
 
 @EBean
 public class User {
