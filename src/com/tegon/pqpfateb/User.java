@@ -1,16 +1,18 @@
 package com.tegon.pqpfateb;
 
 import android.content.SharedPreferences;
-import android.app.Activity;
+import org.androidannotations.annotations.EBean;
+import org.androidannotations.annotations.RootContext;
+import android.content.Context;
 
+@EBean
 public class User {
+  @RootContext Context context;
   SharedPreferences settings;
-  Activity activity;
   static final String PREFS_NAME = "FatebUser";
 
-  public User(Activity activity) {
-    this.activity = activity;
-    this.settings = activity.getSharedPreferences(PREFS_NAME, 0);
+  public User(Context context) {
+    this.settings = context.getSharedPreferences(PREFS_NAME, 0);
   }
 
   public void editSettings(String key, String value) {

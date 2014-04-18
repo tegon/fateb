@@ -20,25 +20,26 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.HideReturnsTransformationMethod;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.CheckedChange;
+import org.androidannotations.annotations.Bean;
 
+@EActivity(R.layout.activity_main)
 public class MainActivity extends Activity {
-  User currentUser;
+  @Bean User currentUser;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+  @ViewById EditText login;
 
-    currentUser = new User(this);
+  @ViewById EditText password;
 
+  @AfterViews
+  void registerOrLogInUser() {
     if (currentUser.isRegistered()) {
       openListActivity();
     }
-
-    Button send = (Button) findViewById(R.id.send);
-    CheckBox showPassword = (CheckBox) findViewById(R.id.showPassword);
-    final EditText login = (EditText) findViewById(R.id.login);
-    final EditText password = (EditText) findViewById(R.id.password);
 
     password.setOnEditorActionListener(new OnEditorActionListener() {
       @Override
@@ -52,30 +53,25 @@ public class MainActivity extends Activity {
         return handled;
       }
     });
+  }
 
-    send.setOnClickListener(new OnClickListener() {
+  @Click
+  void send() {
+    currentUser.register(login.getText().toString(), password.getText().toString());
+    openListActivity();
+  }
 
-  		@Override
-  		public void onClick(View v) {
-        currentUser.register(login.getText().toString(), password.getText().toString());
-        openListActivity();
-  		}
-	  });
-
-    showPassword.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-      public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (!isChecked) {
-          password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        } else {
-          password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-        }
-      }
-    });
+  @CheckedChange
+  void showPassword(CompoundButton buttonView, boolean isChecked) {
+    if (!isChecked) {
+      password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+    } else {
+      password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+    }
   }
 
   public void openListActivity() {
-    Intent intent = new Intent(this, ListActivity.class);
+    Intent intent = new Intent(this, ListActivity_.class);
     startActivity(intent);
     finish();
   }
