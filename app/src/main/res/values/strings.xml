@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Facul</string>
+    <string name="no_connection">Parece que você está sem conexão</string>
+    <string name="sad_face">:(</string>
+    <string name="no_connection_try_again">Verifique sua conexão e tente novamente.</string>
+    <string name="title_activity_list">Facul</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_details">DetailsActivity</string>
+
+</resources>
