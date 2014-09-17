@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Background;
@@ -24,7 +25,7 @@ public class ListActivity extends ActionBarActivity {
     FatebCrawler crawler;
 
     @ViewById
-    ProgressBar progressBar;
+    RelativeLayout progressBar;
 
     ActionBar actionBar;
 

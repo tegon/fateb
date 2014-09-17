@@ -26,7 +26,6 @@ public class LoginActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
 
-        getSupportActionBar().hide();
         setContentView(R.layout.activity_login);
     }
 

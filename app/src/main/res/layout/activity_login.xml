@@ -37,14 +37,16 @@
             android:maxLines="1"
             android:singleLine="true" />
 
-        <Button
-            android:id="@+id/send"
-            style="?android:textAppearanceSmall"
+        <com.dd.processbutton.FlatButton
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="@string/action_sign_in"
-            android:textStyle="bold" />
+            android:layout_marginTop="16dp"
+            android:id="@+id/send"
+            android:textColor="@android:color/white"
+            custom:colorNormal="@android:color/holo_blue_light"
+            custom:colorPressed="@android:color/holo_blue_dark"
+            tools:ignore="NewApi" />
 
     </LinearLayout>
 
